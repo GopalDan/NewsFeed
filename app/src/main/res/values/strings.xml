@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">News Feed</string>
+
+    <!--Strings for Category Preference -->
+    <string name="set_category_key">category</string>
+    <string name="set_category_title">Category</string>
+    <string name="set_category_default_value">@string/set_category_sports_value</string>
+
+    <!-- String for Category  Sport label-->
+    <string name="set_category_sports_label">Sports</string>
+    <string name="set_category_sports_value">cricket</string>
+
+    <!-- String for Category  Entertainment label-->
+    <string name="set_category_entertainment_label">Entertainment</string>
+    <string name="set_category_entertainment_value">movie</string>
+
+    <!-- String for Category  Tech label-->
+    <string name="set_category_tech_label">Tech</string>
+    <string name="set_category_tech_value">tech</string>
+
+    <!-- String for Country Preference -->
+    <string name="set_country_key">country</string>
+    <string name="set_country_title">Country</string>
+    <string name="set_country_default_value">@string/set_country_india_value</string>
+
+    <!-- String for Country India label  -->
+    <string name="set_country_india_label">India</string>
+    <string name="set_country_india_value">india</string>
+
+    <!-- String for Country UK label -->
+    <string name="set_country_usa_label">USA</string>
+    <string name="set_country_usa_value">usa</string>
+
+    <!-- String for Country UAE label -->
+    <string name="set_country_uae_label">UAE</string>
+    <string name="set_country_uae_value">china</string>
+
+    <string name="set_date_key">dob</string>
+    <string name="set_date_default_value">2015.01.01</string>
+
+</resources>
+

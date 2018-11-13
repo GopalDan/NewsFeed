@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="set_category_labels">
+        <item>@string/set_category_sports_label</item>
+        <item>@string/set_category_entertainment_label</item>
+        <item>@string/set_category_tech_label</item>
+    </string-array>
+
+    <string-array name="set_category_values">
+     <item>@string/set_category_sports_value</item>
+        <item>@string/set_category_entertainment_value</item>
+        <item>@string/set_category_tech_value</item>
+    </string-array>
+
+    <string-array name="set_country_labels">
+     <item>@string/set_country_india_label</item>
+        <item>@string/set_country_usa_label</item>
+        <item>@string/set_country_uae_label</item>
+    </string-array>
+
+    <string-array name="set_country_values">
+        <item>@string/set_country_india_value</item>
+        <item>@string/set_country_usa_value</item>
+        <item>@string/set_country_uae_value</item>
+    </string-array>
+
+</resources>

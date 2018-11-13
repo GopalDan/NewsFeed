@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/set_category_key"
+        android:title="@string/set_category_title"
+        android:defaultValue="@string/set_category_default_value"
+        android:entries="@array/set_category_labels"
+        android:entryValues="@array/set_category_values"/>
+    <ListPreference
+        android:key="@string/set_country_key"
+        android:title="@string/set_country_title"
+        android:defaultValue="@string/set_country_default_value"
+        android:entries="@array/set_country_labels"
+        android:entryValues="@array/set_country_values"/>
+    <com.example.gopal.newsfeed.DatePreference
+        android:key="@string/set_date_key" android:title="Date"
+        android:defaultValue="@string/set_date_default_value" />
+
+</PreferenceScreen>
