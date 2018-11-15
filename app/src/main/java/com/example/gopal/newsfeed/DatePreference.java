@@ -97,8 +97,8 @@ public class DatePreference extends DialogPreference implements
      * @return the SimpleDateFormat used for summary dates
      */
     public static SimpleDateFormat summaryFormatter() {
-        //return SimpleDateFormat.getDateInstance(DateFormat.LONG);
-        return new SimpleDateFormat("MMMM dd, yyyy");
+        //return SimpleDateFormat.getDateInstance(DateFormat.LONG); -> MMMM dd, yyyy
+        return new SimpleDateFormat("yyyy-MM-dd");
     }
 
     @Override

@@ -24,19 +24,19 @@
     <string name="set_country_default_value">@string/set_country_india_value</string>
 
     <!-- String for Country India label  -->
-    <string name="set_country_india_label">India</string>
-    <string name="set_country_india_value">india</string>
+    <string name="set_country_india_label">International</string>
+    <string name="set_country_india_value">international</string>
 
     <!-- String for Country UK label -->
     <string name="set_country_usa_label">USA</string>
-    <string name="set_country_usa_value">usa</string>
+    <string name="set_country_usa_value">us</string>
 
     <!-- String for Country UAE label -->
-    <string name="set_country_uae_label">UAE</string>
-    <string name="set_country_uae_value">china</string>
+    <string name="set_country_uae_label">Australia</string>
+    <string name="set_country_uae_value">au</string>
 
     <string name="set_date_key">dob</string>
-    <string name="set_date_default_value">2015.01.01</string>
+    <string name="set_date_default_value">2018-01-26</string>
 
 </resources>
 

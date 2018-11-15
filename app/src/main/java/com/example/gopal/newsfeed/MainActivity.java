@@ -2,6 +2,7 @@ package com.example.gopal.newsfeed;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
    private ProgressBar mProgressbar;
    private TextView textView;
    private String Url = "https://content.guardianapis.com/search?&api-key=d71aed14-2fe8-42ca-b962-a9c3794f5049&show-fields=thumbnail,byline";
-
+   private CustomLoader mCustomLoader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,39 +69,43 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Event>> onCreateLoader(int i, Bundle bundle) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String categorySelected  = sharedPrefs.getString(
-                getString(R.string.set_category_key),
-                getString(R.string.set_category_default_value)
-        );
+            String categorySelected = sharedPrefs.getString(
+                    getString(R.string.set_category_key),
+                    getString(R.string.set_category_default_value)
+            );
 
-        String countrySelected  = sharedPrefs.getString(
-                getString(R.string.set_country_key),
-                getString(R.string.set_country_default_value)
-        );
-        String date = sharedPrefs.getString(
-                getString(R.string.set_date_key),
-                getString(R.string.set_date_default_value));
-        // parse breaks apart the URI string that's passed into its parameter
-        Uri baseUri = Uri.parse(Url);
+            String countrySelected = sharedPrefs.getString(
+                    getString(R.string.set_country_key),
+                    getString(R.string.set_country_default_value)
+            );
+            String date = sharedPrefs.getString(
+                    getString(R.string.set_date_key),
+                    getString(R.string.set_date_default_value));
+            // parse breaks apart the URI string that's passed into its parameter
+            Uri baseUri = Uri.parse(Url);
 
-        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
-        Uri.Builder uriBuilder = baseUri.buildUpon();
+            // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+            Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        // Append query parameter and its value. For example, the `format=geojson`
-        String pageSize = String.valueOf(15);
+            // Append query parameter and its value. For example, the `format=geojson`
+            String pageSize = String.valueOf(20);
+            String orderBy = "newest";
 
-          uriBuilder.appendQueryParameter("q", categorySelected);
-         uriBuilder.appendQueryParameter("pageSize", pageSize);
+            uriBuilder.appendQueryParameter("q", categorySelected);
+            uriBuilder.appendQueryParameter("page-size", pageSize);
+            //  uriBuilder.appendQueryParameter("q ", countrySelected);
+            uriBuilder.appendQueryParameter("order-by", orderBy);
+
+            uriBuilder.appendQueryParameter("from-date", date);
 
 
-        // uriBuilder.appendQueryParameter("q ", countrySelected);
-         //uriBuilder.appendQueryParameter("from-date", date);
+            // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
 
+            mCustomLoader = new CustomLoader(this, uriBuilder.toString());
+            return mCustomLoader;
 
-        // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
-        return new CustomLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -135,5 +140,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             startActivity(intent);
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

@@ -3,6 +3,7 @@ package com.example.gopal.newsfeed;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Event>{
             Date date = sdf.parse(dateInString.replaceAll("Z$", "+0000 "));
             String[] dateArray = date.toString().split("\\s");
             mPublishedDate = dateArray[2] + "-" + dateArray[1];
+            Log.v("this", "Value of :" + date);
 
         } catch (ParseException e) {
             e.printStackTrace();
