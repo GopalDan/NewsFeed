@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.gopal.newsfeed.MainActivity.*;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -46,6 +47,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
            // finish();
+          //  getLoaderManager().restartLoader(1,null,this);
             return true;
         }
         private void bindPreferenceSummaryToValue(Preference preference) {

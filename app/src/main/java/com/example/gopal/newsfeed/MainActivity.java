@@ -10,8 +10,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
    private ProgressBar mProgressbar;
    private TextView textView;
    private String Url = "https://content.guardianapis.com/search?&api-key=d71aed14-2fe8-42ca-b962-a9c3794f5049&show-fields=thumbnail,byline";
-   private CustomLoader mCustomLoader;
+   private int id = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nif = cm.getActiveNetworkInfo();
         if(nif!=null && nif.isConnected()) {
-            getLoaderManager().initLoader(1, null, this).forceLoad();
+            getLoaderManager().initLoader(id, null, this).forceLoad();
         }
         else {
             mProgressbar.setVisibility(View.GONE);
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             String date = sharedPrefs.getString(
                     getString(R.string.set_date_key),
                     getString(R.string.set_date_default_value));
+            Log.v("MainActivity", "Value of date is " + date);
             // parse breaks apart the URI string that's passed into its parameter
             Uri baseUri = Uri.parse(Url);
 
@@ -90,21 +93,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Uri.Builder uriBuilder = baseUri.buildUpon();
 
             // Append query parameter and its value. For example, the `format=geojson`
-            String pageSize = String.valueOf(20);
+            String pageSize = String.valueOf(10);
             String orderBy = "newest";
 
             uriBuilder.appendQueryParameter("q", categorySelected);
             uriBuilder.appendQueryParameter("page-size", pageSize);
-            //  uriBuilder.appendQueryParameter("q ", countrySelected);
+            //uriBuilder.appendQueryParameter("q", countrySelected);
             uriBuilder.appendQueryParameter("order-by", orderBy);
 
-            uriBuilder.appendQueryParameter("from-date", date);
+            //uriBuilder.appendQueryParameter("from-date", date);
 
 
             // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
 
-            mCustomLoader = new CustomLoader(this, uriBuilder.toString());
-            return mCustomLoader;
+
+        return new CustomLoader(this, uriBuilder.toString());
 
     }
 
@@ -142,8 +145,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        getLoaderManager().restartLoader(id, null, this);
+//
+//    }
+
 }
