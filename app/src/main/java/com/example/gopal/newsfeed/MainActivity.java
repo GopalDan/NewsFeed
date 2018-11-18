@@ -10,6 +10,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<List<Event>> {
+        LoaderManager.LoaderCallbacks<List<Event>>, OnSharedPreferenceChangeListener{
 
    private CustomArrayAdapter mCustomAdapter;
    private ProgressBar mProgressbar;
@@ -147,11 +148,26 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        getLoaderManager().restartLoader(id,null,this);
-//
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Set up a listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        getLoaderManager().restartLoader(id,null,this);
+    }
+
 
 }
