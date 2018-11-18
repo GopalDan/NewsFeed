@@ -18,7 +18,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.setting_activity);
     }
     public static class CustomPreferenceFragment extends PreferenceFragment
-    implements Preference.OnPreferenceChangeListener{
+    implements Preference.OnPreferenceChangeListener {
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +30,9 @@ public class SettingActivity extends AppCompatActivity {
             //Updating category preference when app first time launches
             Preference country = findPreference(getString(R.string.set_country_key));
             bindPreferenceSummaryToValue(country);
+            //Updating date preference when app launches first time
+            Preference date = findPreference(getString(R.string.set_date_key));
+            bindPreferenceSummaryToValue(date);
         }
 
         @Override
@@ -56,6 +59,9 @@ public class SettingActivity extends AppCompatActivity {
             String preferenceString = preferences.getString(preference.getKey(),"");
             onPreferenceChange(preference, preferenceString);
         }
+
+
+
     }
 }
 

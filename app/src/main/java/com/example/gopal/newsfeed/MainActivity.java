@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -26,7 +27,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Event>>{
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<List<Event>> {
 
    private CustomArrayAdapter mCustomAdapter;
    private ProgressBar mProgressbar;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             String date = sharedPrefs.getString(
                     getString(R.string.set_date_key),
                     getString(R.string.set_date_default_value));
-            Log.v("MainActivity", "Value of date is " + date);
+            Log.v("MainActivity", "Dated Valued Received " + date);
             // parse breaks apart the URI string that's passed into its parameter
             Uri baseUri = Uri.parse(Url);
 
@@ -146,9 +148,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 //    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        getLoaderManager().restartLoader(id, null, this);
+//    protected void onResume() {
+//        super.onResume();
+//        getLoaderManager().restartLoader(id,null,this);
 //
 //    }
 

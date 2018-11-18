@@ -62,7 +62,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Event>{
             Date date = sdf.parse(dateInString.replaceAll("Z$", "+0000 "));
             String[] dateArray = date.toString().split("\\s");
             mPublishedDate = dateArray[2] + "-" + dateArray[1];
-            Log.v("this", "Value of :" + date);
+           // Log.v("this", "Value of :" + date);
 
         } catch (ParseException e) {
             e.printStackTrace();
