@@ -13,12 +13,14 @@ import android.net.Uri;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -36,17 +38,21 @@ public class MainActivity extends AppCompatActivity implements
    private TextView textView;
    private String Url = "https://content.guardianapis.com/search?&api-key=d71aed14-2fe8-42ca-b962-a9c3794f5049&show-fields=thumbnail,byline";
    private int id = 1;
+   private SwipeRefreshLayout mSwipeRefreshLayout;
+   private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mProgressbar = findViewById(R.id.progressbar);
-        textView = findViewById(R.id.no_network);
-        ListView list = findViewById(R.id.list);
+       textView = findViewById(R.id.no_network);
+        listView = findViewById(R.id.list);
+        mSwipeRefreshLayout =  findViewById(R.id.swipe_refresh);
 
         mCustomAdapter = new CustomArrayAdapter(this,new ArrayList<Event>());
-        list.setAdapter(mCustomAdapter);
+        listView.setAdapter(mCustomAdapter);
         ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nif = cm.getActiveNetworkInfo();
         if(nif!=null && nif.isConnected()) {
@@ -58,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements
 
         }
         // click listener for list item
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Event currentNews = mCustomAdapter.getItem(position);
@@ -69,7 +75,41 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
+        //listener for refreshing layout
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reStartLoader();
+            }
+        });
+        // listener for listView when list is scrolled & enabling swipeRefreshLayout manually to swipe
+        // only if no listItem is to be loaded
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                boolean enable = false;
+                if(listView != null && listView.getChildCount() > 0){
+                    // check if the first item of the list is visible
+                    boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;
+                    // check if the top of the first item is visible
+                    boolean topOfFirstItemVisible = listView.getChildAt(0).getTop() == 0;
+                    // enabling or disabling the refresh layout
+                    enable = firstItemVisible && topOfFirstItemVisible;
+                }
+                mSwipeRefreshLayout.setEnabled(enable);
+            }});
+
+    }
+
+    public void reStartLoader(){
+        getLoaderManager().restartLoader(id,null,this);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -88,27 +128,24 @@ public class MainActivity extends AppCompatActivity implements
             String date = sharedPrefs.getString(
                     getString(R.string.set_date_key),
                     getString(R.string.set_date_default_value));
+
             Log.v("MainActivity", "Dated Valued Received " + date);
+
             // parse breaks apart the URI string that's passed into its parameter
             Uri baseUri = Uri.parse(Url);
 
             // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
             Uri.Builder uriBuilder = baseUri.buildUpon();
 
-            // Append query parameter and its value. For example, the `format=geojson`
+            // Append query parameter and its value. For example, the q = categorySelected
             String pageSize = String.valueOf(10);
             String orderBy = "newest";
 
-            uriBuilder.appendQueryParameter("q", categorySelected);
-            uriBuilder.appendQueryParameter("page-size", pageSize);
-            //uriBuilder.appendQueryParameter("q", countrySelected);
-            uriBuilder.appendQueryParameter("order-by", orderBy);
-
-            //uriBuilder.appendQueryParameter("from-date", date);
-
-
-            // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
-
+        uriBuilder.appendQueryParameter("q", categorySelected);
+        uriBuilder.appendQueryParameter("page-size", pageSize);
+        uriBuilder.appendQueryParameter("q", countrySelected);
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("to-date", date);
 
         return new CustomLoader(this, uriBuilder.toString());
 
@@ -152,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         // Set up a listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences()
+        PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -160,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences()
+        PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 

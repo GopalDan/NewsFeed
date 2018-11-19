@@ -58,11 +58,16 @@ public class CustomArrayAdapter extends ArrayAdapter<Event>{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
         //   String dateString = "22-03-2017 11:18:32";
         try {
-            //formatting the dateString to convert it into a Date
+            //Step 1- Parsing  the dateString to convert it into a Date.
+            //Here as a special case take care of ParseException: Unparseable date: "2018-11-19T06:37:56Z"
             Date date = sdf.parse(dateInString.replaceAll("Z$", "+0000 "));
-            String[] dateArray = date.toString().split("\\s");
-            mPublishedDate = dateArray[2] + "-" + dateArray[1];
-           // Log.v("this", "Value of :" + date);
+
+            //Step 2- Formatting the date to get desired output
+            SimpleDateFormat fmtOut = new SimpleDateFormat("dd-MMM-yyyy");
+            mPublishedDate =  fmtOut.format(date);
+
+            Log.v("CustomArrayAdapter", "Value of Date is :" + date);
+
 
         } catch (ParseException e) {
             e.printStackTrace();

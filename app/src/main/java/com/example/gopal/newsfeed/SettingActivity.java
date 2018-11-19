@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.gopal.newsfeed.MainActivity.*;
@@ -17,6 +18,12 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_activity);
     }
+
+    @Override public void onBackPressed()
+    { super.onBackPressed();
+    NavUtils.navigateUpFromSameTask(this);
+    }
+
     public static class CustomPreferenceFragment extends PreferenceFragment
     implements Preference.OnPreferenceChangeListener {
 
@@ -31,8 +38,8 @@ public class SettingActivity extends AppCompatActivity {
             Preference country = findPreference(getString(R.string.set_country_key));
             bindPreferenceSummaryToValue(country);
             //Updating date preference when app launches first time
-            Preference date = findPreference(getString(R.string.set_date_key));
-            bindPreferenceSummaryToValue(date);
+           // Preference date = findPreference(getString(R.string.set_date_key));
+           // bindPreferenceSummaryToValue(date);
         }
 
         @Override
